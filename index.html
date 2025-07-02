@@ -36,18 +36,18 @@
                     <img src="logo-hotplate.png" alt="Logo HotPlatePro" class="h-10 mr-5">
                 </div>
                 <div class="hidden md:flex items-center space-x-8 ml-auto">
-                    <a href="#about" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">Tentang Kami</a>
-                    <a href="#features" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">Fitur</a>
-                    <a href="#gallery" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">Galeri</a>
-                    <a href="#benefits" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">Manfaat</a>
-                    <a href="#testimonials" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">Testimoni</a>
+                    <a href="#home" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">Home</a>
+                    <a href="#about" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">About</a>
+                    <a href="#keunggulan" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">Keunggulan</a>
+                    <a href="#product" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">Product Katalog</a>
+                    <a href="#informasi" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">Informasi</a>
                     <a href="#contact" class="text-gray-600 hover:text-orange-500 transition py-2 px-3">Kontak</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section class="hero-gradient py-16">
+    <section id="home" class="hero-gradient py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-2 gap-8 items-center">
                 <div class="space-y-6">
@@ -67,14 +67,92 @@
                     </div>
                 </div>
                 <div class="flex justify-center mt-8 md:mt-0">
-                    <div class="hotplate-showcase floating-hotplate">
-                        <img src="hotplate_kambing.jpg" 
-                        alt="Hotplate Premium" class="w-full max-w-md rounded-lg">
-                        <div class="hotplate-overlay">
-                            <h3 class="font-bold text-lg">Hotplate Digital</h3>
-                            <p class="text-sm">Teknologi digital dengan pengaturan suhu presisi</p>
-                        </div>
-                    </div>
+                  <div class="flex justify-center mt-8 md:mt-0">
+    <div class="hotplate-showcase floating-hotplate relative w-full max-w-md rounded-lg overflow-hidden">
+        <img id="hotplateImage" src="hotplate_kambing.jpg" alt="Hotplate Premium" class="w-full rounded-lg object-cover h-auto">
+        
+        <div class="hotplate-overlay absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent text-white rounded-b-lg">
+            <h3 class="font-bold text-lg">Hotplate Digital</h3>
+            <p class="text-sm">Teknologi digital dengan pengaturan suhu presisi</p>
+        </div>
+
+        <button id="prevBtn" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-70 hover:opacity-100 focus:outline-none transition-opacity duration-300 z-10">&#10094;</button>
+        <button id="nextBtn" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-70 hover:opacity-100 focus:outline-none transition-opacity duration-300 z-10">&#10095;</button>
+    </div>
+</div>
+
+<script>
+    const images = [
+        { src: 'hotplate_kambing.jpg', title: 'Hotplate Digital', description: 'Teknologi digital dengan pengaturan suhu presisi' },
+        { src: 'hotplate_ayam.jpg', title: 'Hotplate Modern', description: 'Desain elegan dengan pemanasan cepat' },
+        { src: 'hotplate_bulat.jpg', title: 'Hotplate Canggih', description: 'Sensor suhu otomatis dan efisien' },
+        { src: 'hotplate_oval_garis.jpg', title: 'Hotplate Multifungsi', description: 'Ideal untuk berbagai masakan laut dan lainnya' }
+        // Tambahkan objek gambar lainnya di sini
+    ];
+
+    let currentIndex = 0;
+    const hotplateImage = document.getElementById('hotplateImage');
+    const hotplateTitle = document.querySelector('.hotplate-overlay h3');
+    const hotplateDescription = document.querySelector('.hotplate-overlay p');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let autoSlideInterval; // Variabel untuk menyimpan ID interval
+
+    // Fungsi untuk menampilkan gambar dan informasi
+    function showImage(index) {
+        hotplateImage.src = images[index].src;
+        hotplateTitle.textContent = images[index].title;
+        hotplateDescription.textContent = images[index].description;
+    }
+
+    // Fungsi untuk mengganti ke gambar berikutnya
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+    }
+
+    // Fungsi untuk mengganti ke gambar sebelumnya
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage(currentIndex);
+    }
+
+    // Fungsi untuk memulai gulir otomatis
+    function startAutoSlide() {
+        // Hentikan interval sebelumnya jika ada
+        clearInterval(autoSlideInterval); 
+        // Mulai interval baru, ganti setiap 4 detik (4000ms)
+        autoSlideInterval = setInterval(nextImage, 4000); 
+    }
+
+    // Fungsi untuk menghentikan gulir otomatis
+    function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+    }
+
+    // Event listener untuk tombol navigasi
+    prevBtn.addEventListener('click', () => {
+        stopAutoSlide(); // Hentikan auto-slide saat tombol diklik
+        prevImage();
+        startAutoSlide(); // Mulai lagi auto-slide setelah jeda
+    });
+
+    nextBtn.addEventListener('click', () => {
+        stopAutoSlide(); // Hentikan auto-slide saat tombol diklik
+        nextImage();
+        startAutoSlide(); // Mulai lagi auto-slide setelah jeda
+    });
+
+    // Event listener untuk menghentikan/memulai auto-slide saat mouse di atas/keluar gambar
+    // Ini meningkatkan user experience agar auto-slide tidak mengganggu saat user ingin melihat detail
+    hotplateImage.addEventListener('mouseover', stopAutoSlide);
+    hotplateImage.addEventListener('mouseout', startAutoSlide);
+
+    // Inisialisasi: Tampilkan gambar pertama dan mulai gulir otomatis
+    showImage(currentIndex);
+    startAutoSlide();
+</script>
                 </div>
             </div>
         </div>
@@ -109,77 +187,67 @@
                 </div>
                 <div class="space-y-6">
                     <h3 class="text-2xl font-bold text-gray-800">Komitmen Kami</h3>
-                    <p class="text-gray-600">
+                    <p class="text-gray-600 space-y-2 text-xl">
                         JUAL HOTPLATE | HOT PLATE | PIRING STEAK BISA CUSTOM HARGA BUBRAH ?? MULAI, RP. 50.000.
                     </p>
-                    <ul class="list-disc list-inside text-gray-600 space-y-2">
-                        <li><span class="font-semibold text-orange-500">Hotplate sudah lengkap dengan tatakan kayu + cungkil pengangkatnya</span></li>
-                        <li><span class="font-semibold text-orange-500">Menerima pesanan bikin hotplate sesuai model keinginan anda sendiri</span></li>
-                        <li><span class="font-semibold text-orange-500">Siap kirim luar jawa atau luar pulau</span></li>
-                        <li>Kualitas Bagus dan Harga Terjangkau.</li>
-                        <li>Aman dan Cepat dalam pengiriman.</li>
-                        <li>Ekspedisi Pengiriman harga terjangkau.</li>
-                        <li>Segera Hubungi Kami untuk Kebutuhan Hotplate Anda.</li>
-                    </ul>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 text-xl">
+    <li><span class="font-semibold text-orange-500">Hotplate sudah lengkap dengan tatakan kayu + cungkil pengangkatnya</span></li>
+    <li><span class="font-semibold text-orange-500">Menerima pesanan bikin hotplate sesuai model keinginan anda sendiri</span></li>
+    <li><span class="font-semibold text-orange-500">Siap kirim luar jawa atau luar pulau</span></li>
+</ul>
                 </div>
             </div>
         </div>
     </section>
 
-    ---
-
-    <section id="features" class="py-16 bg-gray-50">
+    <section id="keunggulan" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">Keunggulan <span class="text-orange-500">Hotplate Kami</span></h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                    Dirancang khusus untuk memberikan pengalaman memasak terbaik dengan berbagai fitur unggulan.
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-xl feature-card transition duration-300">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-orange-100 w-14 h-14 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-tachometer-alt text-orange-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold">Pemanasan Cepat</h3>
-                    </div>
-                    <p class="text-gray-600">
-                        Menggunakan elemen pemanas keramik berkualitas tinggi yang bisa mencapai suhu maksimal dalam waktu singkat.
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-bold text-gray-800">Mengapa Memilih <span class="text-orange-500">Ichsan Hotplate?</span></h2>
+                    <p class="text-lg text-gray-600">
+                        Tentunya di ichsan hotplate memiliki kelebih produk, seperti:
                     </p>
+                    
+                    <div class="space-y-4">
+                        <div class="benefit-item">
+                            <p class="font-medium text-gray-800">Kualitas Bagus dan Harga Terjangkau.</p>
+                        </div>
+                        <div class="benefit-item">
+                            <p class="font-medium text-gray-800">Aman dan Cepat dalam pengiriman.</p>
+                        </div>
+                        <div class="benefit-item">
+                            <p class="font-medium text-gray-800">Ekspedisi Pengiriman harga terjangkau.</p>
+                        </div>
+                    </div>
+                    
+                    <button onclick="document.getElementById('order').scrollIntoView()" class="mt-6 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-medium transition transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-shopping-cart mr-2"></i>Beli Sekarang
+                    </button>
                 </div>
-                
-                <div class="bg-white p-6 rounded-xl feature-card transition duration-300">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-orange-100 w-14 h-14 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-sliders-h text-orange-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold">Pengaturan Suhu</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="rounded-lg overflow-hidden shadow-md">
+                        <img src="hotplate_ayam.jpg" 
+                        alt="Hotplate digital" class="w-full h-full object-cover">
                     </div>
-                    <p class="text-gray-600">
-                        8 level pengaturan suhu dari 60°C sampai 280°C untuk berbagai kebutuhan memasak.
-                    </p>
-                </div>
-                
-                <div class="bg-white p-6 rounded-xl feature-card transition duration-300">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-orange-100 w-14 h-14 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-shield-alt text-orange-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold">Sistem Keamanan</h3>
+                    <div class="rounded-lg overflow-hidden shadow-md">
+                        <img src="hotplate_oval_garis.jpg" 
+                        alt="Hotplate portable" class="w-full h-full object-cover">
                     </div>
-                    <p class="text-gray-600">
-                        Dilengkapi sistem proteksi overheat dan auto shut-off saat tidak ada wajan atau suhu terlalu tinggi.
-                    </p>
+                    <div class="rounded-lg overflow-hidden shadow-md">
+                        <img src="hotplate_bulat.jpg" 
+                        alt="Hotplate induksi" class="w-full h-full object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-md">
+                        <img src="hotplate_kambing.jpg" 
+                        alt="Hotplate murah" class="w-full h-full object-cover">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    ---
-
-    <section id="gallery" class="py-16 bg-gray-50">
+    <section id="product" class="py-16 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4"><span class="text-orange-500">Product</span> Catalog</h2>
@@ -246,104 +314,9 @@
         </div>
     </section>
 
-    ---
 
-    <section id="benefits" class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-6">
-                    <h2 class="text-3xl font-bold text-gray-800">Mengapa Memilih <span class="text-orange-500">Ichsan Hotplate?</span></h2>
-                    <p class="text-lg text-gray-600">
-                        Tentunya di ichsan hotplate memiliki kelebih produk, seperti:
-                    </p>
-                    
-                    <div class="space-y-4">
-                        <div class="benefit-item">
-                            <p class="font-medium text-gray-800">Kualitas Bagus dan Harga Terjangkau.</p>
-                        </div>
-                        <div class="benefit-item">
-                            <p class="font-medium text-gray-800">Aman dan Cepat dalam pengiriman.</p>
-                        </div>
-                        <div class="benefit-item">
-                            <p class="font-medium text-gray-800">Ekspedisi Pengiriman harga terjangkau.</p>
-                        </div>
-                    </div>
-                    
-                    <button onclick="document.getElementById('order').scrollIntoView()" class="mt-6 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-medium transition transform hover:scale-105 shadow-lg">
-                        <i class="fas fa-shopping-cart mr-2"></i>Beli Sekarang
-                    </button>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="rounded-lg overflow-hidden shadow-md">
-                        <img src="hotplate_ayam.jpg" 
-                        alt="Hotplate digital" class="w-full h-full object-cover">
-                    </div>
-                    <div class="rounded-lg overflow-hidden shadow-md">
-                        <img src="hotplate_oval_garis.jpg" 
-                        alt="Hotplate portable" class="w-full h-full object-cover">
-                    </div>
-                    <div class="rounded-lg overflow-hidden shadow-md">
-                        <img src="hotplate_bulat.jpg" 
-                        alt="Hotplate induksi" class="w-full h-full object-cover">
-                    </div>
-                    <div class="rounded-lg overflow-hidden shadow-md">
-                        <img src="hotplate_kambing.jpg" 
-                        alt="Hotplate murah" class="w-full h-full object-cover">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    ---
-
-    <section id="testimonials" class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">Apa Kata <span class="text-orange-500">Pelanggan Kami?</span></h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                    Dengarkan langsung dari mereka yang telah merasakan kemudahan dan efisiensi Hotplate Pro.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
-                    <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Ava Smith" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <p class="font-semibold text-gray-800">Ava Smith</p>
-                            <p class="text-sm text-gray-500">Chef Rumahan</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Hotplate Pro ini benar-benar mengubah cara saya memasak. Cepat panas dan mudah dibersihkan. Sangat direkomendasikan!"</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
-                    <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <p class="font-semibold text-gray-800">John Doe</p>
-                            <p class="text-sm text-gray-500">Mahasiswa</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Sebagai anak kos, Hotplate Pro ini penyelamat! Masak jadi praktis dan hemat listrik. Fitur keamanannya juga bikin tenang."</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
-                    <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria Garcia" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <p class="font-semibold text-gray-800">Maria Garcia</p>
-                            <p class="text-sm text-gray-500">Pekerja Kantoran</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">"Desainnya minimalis, pas banget untuk dapur saya yang kecil. Memasak jadi lebih cepat dan tidak ribet. Love it!"</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    ---
-
-    <section id="contact" class="py-16 bg-white">
+    <section id="informasi" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4"><span class="text-orange-500">Informasi</span> Kami</h2>
@@ -404,7 +377,7 @@
 
     ---
 
-    <section id="order" class="py-16 bg-orange-500 text-white text-center">
+    <section id="contact" class="py-16 bg-orange-500 text-white text-center">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold mb-4">Siap untuk Pengalaman Memasak yang Lebih Baik?</h2>
             <p class="text-xl mb-8">
